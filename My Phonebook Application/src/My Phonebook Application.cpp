@@ -8,7 +8,7 @@ using namespace std;
 
 Contact addContact(string, string);
 int searchContact(string, Contact[], int);
-void resizeContacts(Contact*, int, int);
+//void resizeContacts(Contact*&, int, int);
 
 int main() {
 	Contact* pList;
@@ -52,8 +52,8 @@ int main() {
 				cin.clear();
 				getline(cin, number);
 				Contact adding = addContact(name, number);
-				resizeContacts(pList, count+1, count+1);
-				pList[count] = adding;
+				//resizeContacts(pList, count, count+1);
+				pList[count] = addContact(name, number);
 				count++;
 			}
 			else if((input == 'S') || (input == 's')){
@@ -77,12 +77,14 @@ int main() {
 				if(name[name.length() - 1] == '\r') name = name.substr(0, name.length() - 1);
 				i = searchContact(name, pList, count);
 				pList[i] = Contact();
-				resizeContacts(pList, count+1, count-1);
+				//resizeContacts(pList, count, count-1);
 				count--;
 			}
 			else if((input == 'L') || (input == 'l')){
-				for(int n = 0; n < count; n++){
-					cout << pList[n];
+				for(int n = 0; n < 200000; n++){
+					if(pList[n].c == 0){continue;}
+					else
+						cout << pList[n];
 				}
 			}
 			else if((input == 'Q') || (input == 'q')){
@@ -133,7 +135,7 @@ int searchContact(string name, Contact Contacts[], int count){
 
 }
 
-void resizeContacts(Contact* Contacts, int current, int size){
+/*void resizeContacts(Contact*& Contacts, int current, int size){
 	Contact* temp;
 	temp = new Contact[size];
 	int j = 0;
@@ -145,7 +147,7 @@ void resizeContacts(Contact* Contacts, int current, int size){
 		}
 		else continue;
 	}
-
+	delete [] Contacts;
 	Contacts = temp;
 	delete [] temp;
-}
+}*/
