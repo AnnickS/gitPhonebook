@@ -7,12 +7,12 @@
 using namespace std;
 
 Contact addContact(string, string);
-int searchContact(string, int*, int);
-void resizeContacts(int*, int, int);
+int searchContact(string, Contact*, int);
+void resizeContacts(Contact*, int, int);
 
 int main() {
-	Contact* p;
-	p = new Contact[200000];
+	Contact* pList;
+	pList = new Contact[200000];
 	ifstream inFile;
 	inFile.open("phonebook.txt");
 
@@ -25,29 +25,10 @@ int main() {
 	{
 		inFile >> nameLast;
 		inFile >> number;
-		name += nameLast;
-		//p[count] = addContact(name, number);
+		name += ' ' +nameLast;
+		pList[count] = addContact(name, number);
 		count++;
 	}
-
-	/*int* pList;
-	pList = new Contact[200000];
-	int total = 0;
-
-	ifstream file;
-	file.open("phonebook.txt");
-
-	while(!file.eof()){
-		string name;
-		string nameLast;
-		string number;
-		file >> name;
-		file >> nameLast;
-		file >> number;
-		name += nameLast;
-		pList[total] = addContact(name, number);
-		total++;
-	}*/
 
 	cout<<"***MY PHONEB00K APPLICATION***"<<endl;
 	cout<<"Please choose an operation:"<<endl;
@@ -70,8 +51,8 @@ int main() {
 				cin.clear();
 				getline(cin, number);
 				Contact adding = addContact(name, number);
-				resizeContacts(p, count+1, count+1);
-				p[count] = adding;
+				resizeContacts(pList, count+1, count+1);
+				pList[count] = adding;
 				count++;
 			}
 			else if((input == 'S') || (input == 's')){
@@ -80,8 +61,8 @@ int main() {
 				cout << "Enter name: ";
 				cin.clear();
 				getline(cin, name);
-				p = searchContact(name, p, count);
-				if(p != -1){
+				i = searchContact(name, pList, count);
+				if(i != -1){
 					//cout << "Phone number: " << p[i]->getNumber();
 				}
 			}
@@ -91,14 +72,14 @@ int main() {
 				cout << "Enter name: ";
 				cin.clear();
 				getline(cin, name);
-				i = searchContact(name, p, count);
-				p[i] = Contact();
+				i = searchContact(name, pList, count);
+				pList[i] = Contact();
 				//resizeContacts(Contacts, count, count-1);
 				count--;
 			}
 			else if((input == 'L') || (input == 'l')){
 				for(int n = 0; n < count; n++){
-					cout << p[n];
+					cout << pList[n];
 				}
 			}
 			else if((input == 'Q') || (input == 'q')){
@@ -112,7 +93,7 @@ int main() {
 			cin.clear();
 	}
 
-	delete [] p;
+	delete [] pList;
 
 	inFile.close();
 
@@ -128,7 +109,7 @@ Contact addContact(string name, string number){
 	return added;
 }
 
-int searchContact(string name, Contact Contacts[], int count){
+int searchContact(string name, Contact * Contacts, int count){
 	int p = 0;
 	bool found;
 
@@ -149,8 +130,9 @@ int searchContact(string name, Contact Contacts[], int count){
 
 }
 
-void resizeContacts(Contact Contacts[], int current, int size){
-	Contact temp[size];
+void resizeContacts(Contact * Contacts, int current, int size){
+	Contact* temp;
+	temp = new Contact[size];
 	int j = 0;
 
 	for(int i = 0; i < current; i++){
@@ -162,4 +144,5 @@ void resizeContacts(Contact Contacts[], int current, int size){
 	}
 
 	Contacts = temp;
+	delete [] temp;
 }
