@@ -7,7 +7,7 @@
 using namespace std;
 
 Contact addContact(string, string);
-int searchContact(string, Contact*, int);
+int searchContact(string, Contact[], int);
 void resizeContacts(Contact*, int, int);
 
 int main() {
@@ -25,7 +25,7 @@ int main() {
 	{
 		inFile >> nameLast;
 		inFile >> number;
-		name += ' ' +nameLast;
+		name += " " +nameLast;
 		pList[count] = addContact(name, number);
 		count++;
 	}
@@ -47,6 +47,7 @@ int main() {
 				cout << "Enter name: ";
 				cin.clear();
 				getline(cin, name);
+				if(name[name.length() - 1] == '\r') name = name.substr(0, name.length() - 1);
 				cout << "Enter number: ";
 				cin.clear();
 				getline(cin, number);
@@ -61,9 +62,10 @@ int main() {
 				cout << "Enter name: ";
 				cin.clear();
 				getline(cin, name);
+				if(name[name.length() - 1] == '\r') name = name.substr(0, name.length() - 1);
 				i = searchContact(name, pList, count);
 				if(i != -1){
-					//cout << "Phone number: " << p[i]->getNumber();
+					cout << "Phone number: " << pList[i].getNumber();
 				}
 			}
 			else if((input == 'D') || (input == 'd')){
@@ -72,9 +74,10 @@ int main() {
 				cout << "Enter name: ";
 				cin.clear();
 				getline(cin, name);
+				if(name[name.length() - 1] == '\r') name = name.substr(0, name.length() - 1);
 				i = searchContact(name, pList, count);
 				pList[i] = Contact();
-				//resizeContacts(Contacts, count, count-1);
+				resizeContacts(pList, count+1, count-1);
 				count--;
 			}
 			else if((input == 'L') || (input == 'l')){
@@ -109,7 +112,7 @@ Contact addContact(string name, string number){
 	return added;
 }
 
-int searchContact(string name, Contact * Contacts, int count){
+int searchContact(string name, Contact Contacts[], int count){
 	int p = 0;
 	bool found;
 
@@ -130,7 +133,7 @@ int searchContact(string name, Contact * Contacts, int count){
 
 }
 
-void resizeContacts(Contact * Contacts, int current, int size){
+void resizeContacts(Contact* Contacts, int current, int size){
 	Contact* temp;
 	temp = new Contact[size];
 	int j = 0;
