@@ -3,34 +3,31 @@
 #include <fstream>
 #include "Contact.h"
 
+
 using namespace std;
 
 Contact addContact(string, string);
-int searchContact(string, Contact[], int);
-void resizeContacts(Contact[], int, int);
+int searchContact(string, int*, int);
+void resizeContacts(int*, int, int);
 
 int main() {
-	Contact Contacts[1];
+	Contact* p;
+	p = new Contact[200000];
 	ifstream inFile;
 	inFile.open("phonebook.txt");
-	int count = 0;
 
-	if(inFile)
+	int count = 0;
+	string name;
+	string nameLast;
+	string number;
+
+	while(inFile >> name)
 	{
-	for(int i = 0; i < 50; i++){
-		string name;
-		string nameLast;
-		string number;
-		inFile >> name;
 		inFile >> nameLast;
 		inFile >> number;
 		name += nameLast;
-		Contacts[i] = addContact(name, number);
+		//p[count] = addContact(name, number);
 		count++;
-	}
-	}
-	if(!inFile){
-		cout << "couldn't open file" << endl;
 	}
 
 	/*int* pList;
@@ -73,35 +70,35 @@ int main() {
 				cin.clear();
 				getline(cin, number);
 				Contact adding = addContact(name, number);
-				resizeContacts(Contacts, count+1, count+1);
-				Contacts[count] = adding;
+				resizeContacts(p, count+1, count+1);
+				p[count] = adding;
 				count++;
 			}
 			else if((input == 'S') || (input == 's')){
 				string name;
-				int p;
+				int i;
 				cout << "Enter name: ";
 				cin.clear();
 				getline(cin, name);
-				p = searchContact(name, Contacts, count);
+				p = searchContact(name, p, count);
 				if(p != -1){
-					cout << "Phone number: " << Contacts[p].getNumber();
+					//cout << "Phone number: " << p[i]->getNumber();
 				}
 			}
 			else if((input == 'D') || (input == 'd')){
 				string name;
-				int p;
+				int i;
 				cout << "Enter name: ";
 				cin.clear();
 				getline(cin, name);
-				p = searchContact(name, Contacts, count);
-				Contacts[p] = Contact();
+				i = searchContact(name, p, count);
+				p[i] = Contact();
 				//resizeContacts(Contacts, count, count-1);
 				count--;
 			}
 			else if((input == 'L') || (input == 'l')){
 				for(int n = 0; n < count; n++){
-					cout << Contacts[n];
+					cout << p[n];
 				}
 			}
 			else if((input == 'Q') || (input == 'q')){
@@ -115,7 +112,7 @@ int main() {
 			cin.clear();
 	}
 
-	//delete [] pList;
+	delete [] p;
 
 	inFile.close();
 
